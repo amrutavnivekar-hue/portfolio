@@ -182,9 +182,9 @@ export default function SettingsPage() {
   const selectedProvider = MAIL_PROVIDERS.find((p) => p.id === provider)!;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 max-w-4xl mx-auto">
       <div>
-        <h2 className="text-2xl font-bold" style={{ color: 'var(--text)' }}>Settings</h2>
+        <h2 className="text-xl sm:text-2xl font-bold" style={{ color: 'var(--text)' }}>Settings</h2>
         <p className="mt-1 text-sm opacity-60">Configure mail provider and reply templates</p>
       </div>
 
@@ -200,8 +200,7 @@ export default function SettingsPage() {
         {/* Provider picker */}
         <div>
           <label className="block text-sm font-medium opacity-70 mb-2">Mail Provider</label>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-            {MAIL_PROVIDERS.map((p) => (
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">            {MAIL_PROVIDERS.map((p) => (
               <button
                 key={p.id}
                 onClick={() => setProvider(p.id)}
@@ -259,7 +258,7 @@ export default function SettingsPage() {
             {mailSaving ? 'Saving...' : 'Save Mail Settings'}
           </button>
           {mailMsg && (
-            <span className="text-sm" style={{ color: mailMsg.startsWith('✓') ? 'var(--accent)' : '#ef4444' }}>
+            <span className="text-sm" style={{ color: mailMsg.startsWith('✓') ? 'var(--accent)' : 'var(--secondary)' }}>
               {mailMsg}
             </span>
           )}
@@ -324,8 +323,12 @@ export default function SettingsPage() {
                   </button>
                   <button
                     onClick={() => deleteTemplate(tpl.id)}
-                    className="rounded px-2 py-1.5 text-xs font-medium text-white"
-                    style={{ background: '#dc2626' }}
+                    className="rounded px-2 py-1.5 text-xs font-medium"
+                    style={{
+                      background: 'color-mix(in srgb, var(--secondary) 15%, var(--background))',
+                      color: 'var(--secondary)',
+                      border: '1px solid color-mix(in srgb, var(--secondary) 50%, transparent)',
+                    }}
                   >
                     Delete
                   </button>
@@ -397,7 +400,7 @@ export default function SettingsPage() {
                 Cancel
               </button>
               {formMsg && (
-                <span className="text-sm" style={{ color: formMsg.startsWith('✓') ? 'var(--accent)' : '#ef4444' }}>
+                <span className="text-sm" style={{ color: formMsg.startsWith('✓') ? 'var(--accent)' : 'var(--secondary)' }}>
                   {formMsg}
                 </span>
               )}

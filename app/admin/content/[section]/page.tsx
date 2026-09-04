@@ -444,6 +444,11 @@ export default function SectionEditorPage() {
     color: 'var(--text)',
     border: '1px solid color-mix(in srgb, var(--primary) 50%, transparent)',
   };
+  const dangerBtnStyle: React.CSSProperties = {
+    background: 'color-mix(in srgb, var(--secondary) 15%, var(--background))',
+    color: 'var(--secondary)',
+    border: '1px solid color-mix(in srgb, var(--secondary) 50%, transparent)',
+  };
 
   return (
     <div className="grid gap-4 xl:grid-cols-[1.2fr_1fr]">
@@ -498,8 +503,8 @@ export default function SectionEditorPage() {
                       <div className="mb-2 flex justify-end">
                         <button
                           onClick={() => setField(field.key, items.filter((_, i) => i !== idx))}
-                          className="rounded px-2 py-1 text-xs text-white hover:opacity-80"
-                          style={{ background: '#dc2626' }}
+                          className="rounded px-2 py-1 text-xs hover:opacity-80"
+                          style={dangerBtnStyle}
                         >
                           Delete
                         </button>
@@ -555,8 +560,8 @@ export default function SectionEditorPage() {
                                           next[idx][childField.key] = nestedItems.filter((_, i) => i !== nestedIndex);
                                           setField(field.key, next);
                                         }}
-                                        className="rounded px-2 py-1 text-xs text-white hover:opacity-80"
-                                        style={{ background: '#dc2626' }}
+                                        className="rounded px-2 py-1 text-xs hover:opacity-80"
+                                        style={dangerBtnStyle}
                                       >
                                         Delete
                                       </button>
