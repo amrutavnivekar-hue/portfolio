@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<achievements>
+  <achievement>
+    <title>Professional Roles</title>
+    <count>3</count>
+    <icon>💼</icon>
+  </achievement>
+  <achievement>
+    <title>Academic GPA</title>
+    <count>8.36</count>
+    <icon>🎓</icon>
+  </achievement>
+  <achievement>
+    <title>Core Projects</title>
+    <count>2</count>
+    <icon>🚀</icon>
+  </achievement>
+  <achievement>
+    <title>Certifications</title>
+    <count>2</count>
+    <icon>🏆</icon>
+  </achievement>
+</achievements>

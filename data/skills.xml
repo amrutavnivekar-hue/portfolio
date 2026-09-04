@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<skills>
+  <category name="Technical &amp; Languages">
+    <skill name="Python" level="90" />
+    <skill name="SQL" level="85" />
+    <skill name="SQLite" level="85" />
+    <skill name="MongoDB" level="75" />
+    <skill name="HTML/CSS" level="90" />
+    <skill name="PHP" level="80" />
+    <skill name="XML" level="85" />
+  </category>
+  <category name="Systems &amp; Support Tools">
+    <skill name="Active Directory" level="95" />
+    <skill name="Microsoft Entra ID" level="90" />
+    <skill name="Azure Administration" level="80" />
+    <skill name="Linux Operations" level="85" />
+    <skill name="ServiceNow CRM" level="90" />
+    <skill name="Nextthink Monitor" level="85" />
+  </category>
+  <category name="IT Operations">
+    <skill name="ITIL Practices" level="90" />
+    <skill name="Incident Management" level="95" />
+    <skill name="SLA Compliance" level="95" />
+    <skill name="Network Troubleshooting" level="90" />
+    <skill name="Windows/Mac Support" level="95" />
+  </category>
+  <category name="Soft Skills">
+    <skill name="Problem Solving" level="95" />
+    <skill name="Team Leadership" level="90" />
+    <skill name="Client Coordination" level="90" />
+    <skill name="Troubleshooting" level="95" />
+    <skill name="Communication" level="90" />
+  </category>
+  <category name="Languages Spoken">
+    <skill name="English" level="95" />
+    <skill name="Hindi" level="90" />
+    <skill name="Marathi" level="95" />
+  </category>
+</skills>

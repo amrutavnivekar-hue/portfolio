@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<certifications>
+  <certification>
+    <name>RedHat Certified System Administrator (RHCSA) Training</name>
+    <organization>RedHat Certified Training</organization>
+    <date>2025</date>
+    <link>https://www.redhat.com</link>
+  </certification>
+  <certification>
+    <name>Accenture Data Analytics &amp; Visualization Job Simulation</name>
+    <organization>Forage / Accenture</organization>
+    <date>2024</date>
+    <link>https://www.theforage.com</link>
+  </certification>
+</certifications>

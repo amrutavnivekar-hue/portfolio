@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testimonials>
+  <testimonial>
+    <name>Technical Delivery Manager</name>
+    <role>Fujitsu Noida</role>
+    <text>Amrutaa is a highly reliable support engineer who handles incidents under tight SLAs. Her Active Directory administration and problem-solving skills are exceptional.</text>
+    <image>/images/testimonial1.jpg</image>
+  </testimonial>
+  <testimonial>
+    <name>IT Operations Lead</name>
+    <role>Infinite Computer Solutions</role>
+    <text>Working with Amrutaa was a pleasure. She displayed extreme competence in network troubleshooting and user-account management, ensuring near-perfect SLA compliance.</text>
+    <image>/images/testimonial2.jpg</image>
+  </testimonial>
+</testimonials>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projects>
+  <project>
+    <name>Personal Finance Management Application</name>
+    <description>Developed a secure personal finance application featuring secure user authentication, transaction tracking, budgeting, and comprehensive financial reporting using database backends.</description>
+    <technologies>Python, SQLite</technologies>
+    <thumbnail>/images/project1.jpg</thumbnail>
+    <github>https://github.com/Amruta-nivekar</github>
+    <demo>https://github.com/Amruta-nivekar</demo>
+  </project>
+  <project>
+    <name>NGO Planet</name>
+    <description>Created an interactive web platform for NGO engagement, allowing users to locate nearby organizations, process secure donations, and sign up for volunteer opportunities.</description>
+    <technologies>HTML, CSS, PHP, XML</technologies>
+    <thumbnail>/images/project2.jpg</thumbnail>
+    <github>https://github.com/Amruta-nivekar</github>
+    <demo>https://github.com/Amruta-nivekar</demo>
+  </project>
+</projects>

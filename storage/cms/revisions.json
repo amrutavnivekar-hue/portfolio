@@ -1,0 +1,74 @@
+[
+  {
+    "id": "1780484030633-ga5ynf",
+    "section": "profile",
+    "xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<profile>\n  <name>Amrutaa Nivekar</name>\n  <role>Application Support Engineer</role>\n  <title>Delivering Efficient IT Support &amp; Technical Solutions</title>\n  <bio>Detail-oriented Application Support Engineer and Technical Support specialist with a solid foundation in IT support, systems administration, and software development. Experienced in Active Directory administration, Incident/Request management under ITIL practices using ServiceNow, and endpoint monitoring with Nextthink. Highly capable in Windows/Mac systems, network troubleshooting (LAN, VPN, Wi-Fi), and development technologies like Python, SQL, and SQLite.</bio>\n  <email>nivekaramruta@gmail.com</email>\n  <phone>+91 7666751096</phone>\n  <location>Pune, Maharashtra, India</location>\n  <linkedin>https://linkedin.com/in/amruta-nivekar</linkedin>\n  <github>https://github.com/Amruta-nivekar</github>\n  <twitter>https://twitter.com/Amruta_nivekar</twitter>\n  <image>/images/profile.jpg</image>\n  <resume>/resume.pdf</resume>\n</profile>\n",
+    "createdAt": "2026-06-03T10:53:50.633Z",
+    "createdBy": "admin",
+    "type": "publish"
+  },
+  {
+    "id": "1780473606895-756lj2",
+    "section": "profile",
+    "xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<profile>\n  <name>Amrutaa Nivekar</name>\n  <role>Application Support Engineer</role>\n  <title>Delivering Efficient IT Support &amp; Technical Solutions</title>\n  <bio>Detail-oriented Application Support Engineer and Technical Support specialist with a solid foundation in IT support, systems administration, and software development. Experienced in Active Directory administration, Incident/Request management under ITIL practices using ServiceNow, and endpoint monitoring with Nextthink. Highly capable in Windows/Mac systems, network troubleshooting (LAN, VPN, Wi-Fi), and development technologies like Python, SQL, and SQLite.</bio>\n  <email>nivekaramruta@gmail.com</email>\n  <phone>+91 7666751096</phone>\n  <location>Pune, Maharashtra, India</location>\n  <linkedin>https://linkedin.com/in/amruta-nivekar</linkedin>\n  <github>https://github.com/Amruta-nivekar</github>\n  <twitter>https://twitter.com/Amruta_nivekar</twitter>\n  <image>/images/profile.jpg</image>\n  <resume>/resume.pdf</resume>\n</profile>\n",
+    "createdAt": "2026-06-03T08:00:06.895Z",
+    "createdBy": "admin",
+    "type": "publish"
+  },
+  {
+    "id": "1780473538359-l76hd8",
+    "section": "profile",
+    "xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<profile>\n  <name>Amrutaa Nivekar</name>\n  <role>Application Support Engineer</role>\n  <title>Delivering Efficient IT Support &amp; Technical Solutions</title>\n  <bio>Detail-oriented Application Support Engineer and Technical Support specialist with a solid foundation in IT support, systems administration, and software development. Experienced in Active Directory administration, Incident/Request management under ITIL practices using ServiceNow, and endpoint monitoring with Nextthink. Highly capable in Windows/Mac systems, network troubleshooting (LAN, VPN, Wi-Fi), and development technologies like Python, SQL, and SQLite.</bio>\n  <email>nivekaramruta@gmail.com</email>\n  <phone>+91 7666751096</phone>\n  <location>Pune, Maharashtra, India</location>\n  <linkedin>https://linkedin.com/in/amruta-nivekar</linkedin>\n  <github>https://github.com/Amruta-nivekar</github>\n  <twitter>https://twitter.com/Amruta_nivekar</twitter>\n  <image>/images/profile.jpg</image>\n  <resume>/resume.pdf</resume>\n</profile>\n",
+    "createdAt": "2026-06-03T07:58:58.359Z",
+    "createdBy": "admin",
+    "type": "publish"
+  },
+  {
+    "id": "1780472747249-evvmu8",
+    "section": "achievements",
+    "xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<achievements>\n  <achievement>\n    <title>Professional Roles</title>\n    <count>3</count>\n    <icon>💼</icon>\n  </achievement>\n  <achievement>\n    <title>Academic GPA</title>\n    <count>8.36</count>\n    <icon>🎓</icon>\n  </achievement>\n  <achievement>\n    <title>Core Projects</title>\n    <count>2</count>\n    <icon>🚀</icon>\n  </achievement>\n  <achievement>\n    <title>Certifications</title>\n    <count>2</count>\n    <icon>🏆</icon>\n  </achievement>\n</achievements>\n",
+    "createdAt": "2026-06-03T07:45:47.249Z",
+    "createdBy": "admin",
+    "type": "publish"
+  },
+  {
+    "id": "1780472739892-e8g6po",
+    "section": "achievements",
+    "xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<achievements>\n  <achievement>\n    <title>Professional Roles</title>\n    <count>3</count>\n    <icon>💼</icon>\n  </achievement>\n  <achievement>\n    <title>Academic GPA</title>\n    <count>8.36</count>\n    <icon>🎓</icon>\n  </achievement>\n  <achievement>\n    <title>Core Projects</title>\n    <count>2</count>\n    <icon>🚀</icon>\n  </achievement>\n  <achievement>\n    <title>Certifications</title>\n    <count>2</count>\n    <icon>🏆</icon>\n  </achievement>\n</achievements>\n",
+    "createdAt": "2026-06-03T07:45:39.892Z",
+    "createdBy": "admin",
+    "type": "publish"
+  },
+  {
+    "id": "1780471968884-oc69mw",
+    "section": "experience",
+    "xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<experiences>\n  <experience>\n    <company>Fujitsu</company>\n    <role>Application Support Engineer</role>\n    <duration>Nov 2025 - Present</duration>\n    <technologies>ServiceNow, Nextthink, Active Directory, Windows, macOS, ITIL, LAN, VPN, Wi-Fi</technologies>\n    <description>Provide L1/L2 support for enterprise applications and end users. Manage incidents, service requests, and change requests in line with ITIL practices via ServiceNow, ensuring SLA compliance. Monitor endpoint performance using Nextthink to proactively resolve issues. Administer Active Directory including user accounts, password resets, and group policies.</description>\n  </experience>\n  <experience>\n    <company>Infinite Computer Solutions</company>\n    <role>Associate Technical Support Engineer</role>\n    <duration>Jan 2025 - Nov 2025</duration>\n    <technologies>Active Directory, ServiceNow, ITIL, Windows, macOS, LAN, Wi-Fi, VPN</technologies>\n    <description>Provided technical support for Windows and Mac systems. Handled incidents, service requests, and change requests in ServiceNow, adhering to ITIL best practices and meeting SLAs. Administered Active Directory user accounts, security groups, and group policies. Monitored system performance and escalated critical incidents to higher-level teams.</description>\n  </experience>\n  <experience>\n    <company>ICICI Lombard</company>\n    <role>Associate Development Manager</role>\n    <duration>May 2024 - July 2024</duration>\n    <technologies>Project Management, Client Coordination, Team Leadership</technologies>\n    <description>Developed strong leadership and project management skills, coordinating team activities to optimize performance and productivity. Coordinated with clients to analyze requirements and deliver suitable technical solutions.</description>\n  </experience>\n</experiences>\n",
+    "createdAt": "2026-06-03T07:32:48.884Z",
+    "createdBy": "admin",
+    "type": "publish"
+  },
+  {
+    "id": "1780471652815-y7difj",
+    "section": "profile",
+    "xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<profile>\n  <name>Amrutaa Nivekar</name>\n  <role>Application Support Engineer</role>\n  <title>Delivering Efficient IT Support &amp; Technical Solutions</title>\n  <bio>Detail-oriented Application Support Engineer and Technical Support specialist with a solid foundation in IT support, systems administration, and software development. Experienced in Active Directory administration, Incident/Request management under ITIL practices using ServiceNow, and endpoint monitoring with Nextthink. Highly capable in Windows/Mac systems, network troubleshooting (LAN, VPN, Wi-Fi), and development technologies like Python, SQL, and SQLite.</bio>\n  <email>nivekaramruta@gmail.com</email>\n  <phone>+91 7666751096</phone>\n  <location>Pune, Maharashtra, India</location>\n  <linkedin>https://linkedin.com/in/amruta-nivekar</linkedin>\n  <github>https://github.com/Amruta-nivekar</github>\n  <twitter>https://twitter.com/Amruta_nivekar</twitter>\n  <image>/images/profile.jpg</image>\n  <resume>/resume.pdf</resume>\n</profile>\n",
+    "createdAt": "2026-06-03T07:27:32.815Z",
+    "createdBy": "admin",
+    "type": "publish"
+  },
+  {
+    "id": "1780471649901-pcv2ey",
+    "section": "profile",
+    "xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<profile>\n  <name>Amrutaa Nivekar</name>\n  <role>Application Support Engineer</role>\n  <title>Delivering Efficient IT Support &amp; Technical Solutions</title>\n  <bio>Detail-oriented Application Support Engineer and Technical Support specialist with a solid foundation in IT support, systems administration, and software development. Experienced in Active Directory administration, Incident/Request management under ITIL practices using ServiceNow, and endpoint monitoring with Nextthink. Highly capable in Windows/Mac systems, network troubleshooting (LAN, VPN, Wi-Fi), and development technologies like Python, SQL, and SQLite.</bio>\n  <email>nivekaramruta@gmail.com</email>\n  <phone>+91 7666751096</phone>\n  <location>Pune, Maharashtra, India</location>\n  <linkedin>https://linkedin.com/in/amruta-nivekar</linkedin>\n  <github>https://github.com/Amruta-nivekar</github>\n  <twitter>https://twitter.com/Amruta_nivekar</twitter>\n  <image>/images/profile.jpg</image>\n  <resume>/resume.pdf</resume>\n</profile>\n",
+    "createdAt": "2026-06-03T07:27:29.901Z",
+    "createdBy": "admin",
+    "type": "publish"
+  },
+  {
+    "id": "1780471614086-3v1jf0",
+    "section": "profile",
+    "xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<profile>\n  <name>Amrutaa Nivekar</name>\n  <role>Application Support Engineer</role>\n  <title>Delivering Efficient IT Support &amp; Technical Solutions</title>\n  <bio>Detail-oriented Application Support Engineer and Technical Support specialist with a solid foundation in IT support, systems administration, and software development. Experienced in Active Directory administration, Incident/Request management under ITIL practices using ServiceNow, and endpoint monitoring with Nextthink. Highly capable in Windows/Mac systems, network troubleshooting (LAN, VPN, Wi-Fi), and development technologies like Python, SQL, and SQLite.</bio>\n  <email>nivekaramruta@gmail.com</email>\n  <phone>+91 7666751096</phone>\n  <location>Pune, Maharashtra, India</location>\n  <linkedin>https://linkedin.com/in/amruta-nivekar</linkedin>\n  <github>https://github.com/Amruta-nivekar</github>\n  <twitter>https://twitter.com/Amruta_nivekar</twitter>\n  <image>/images/profile.jpg</image>\n  <resume>/resume.pdf</resume>\n</profile>\n",
+    "createdAt": "2026-06-03T07:26:54.086Z",
+    "createdBy": "admin",
+    "type": "publish"
+  }
+]

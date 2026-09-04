@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<experiences>
+  <experience>
+    <company>Fujitsu</company>
+    <role>Application Support Engineer</role>
+    <duration>Nov 2025 - Present</duration>
+    <technologies>ServiceNow, Nextthink, Active Directory, Windows, macOS, ITIL, LAN, VPN, Wi-Fi</technologies>
+    <description>Provide L1/L2 support for enterprise applications and end users. Manage incidents, service requests, and change requests in line with ITIL practices via ServiceNow, ensuring SLA compliance. Monitor endpoint performance using Nextthink to proactively resolve issues. Administer Active Directory including user accounts, password resets, and group policies.</description>
+  </experience>
+  <experience>
+    <company>Infinite Computer Solutions</company>
+    <role>Associate Technical Support Engineer</role>
+    <duration>Jan 2025 - Nov 2025</duration>
+    <technologies>Active Directory, ServiceNow, ITIL, Windows, macOS, LAN, Wi-Fi, VPN</technologies>
+    <description>Provided technical support for Windows and Mac systems. Handled incidents, service requests, and change requests in ServiceNow, adhering to ITIL best practices and meeting SLAs. Administered Active Directory user accounts, security groups, and group policies. Monitored system performance and escalated critical incidents to higher-level teams.</description>
+  </experience>
+  <experience>
+    <company>ICICI Lombard</company>
+    <role>Associate Development Manager</role>
+    <duration>May 2024 - July 2024</duration>
+    <technologies>Project Management, Client Coordination, Team Leadership</technologies>
+    <description>Developed strong leadership and project management skills, coordinating team activities to optimize performance and productivity. Coordinated with clients to analyze requirements and deliver suitable technical solutions.</description>
+  </experience>
+</experiences>

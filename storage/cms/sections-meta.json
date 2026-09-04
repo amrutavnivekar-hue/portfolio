@@ -1,0 +1,74 @@
+[
+  {
+    "section": "profile",
+    "enabled": true,
+    "order": 1,
+    "status": "published",
+    "updatedAt": "2026-06-03T10:53:50.638Z",
+    "updatedBy": "admin"
+  },
+  {
+    "section": "experience",
+    "enabled": true,
+    "order": 2,
+    "status": "published",
+    "updatedAt": "2026-06-03T07:32:48.888Z",
+    "updatedBy": "admin"
+  },
+  {
+    "section": "education",
+    "enabled": true,
+    "order": 3,
+    "status": "published",
+    "updatedAt": "2026-06-03T07:26:02.407Z",
+    "updatedBy": "system"
+  },
+  {
+    "section": "skills",
+    "enabled": true,
+    "order": 4,
+    "status": "published",
+    "updatedAt": "2026-06-03T07:26:02.407Z",
+    "updatedBy": "system"
+  },
+  {
+    "section": "certifications",
+    "enabled": true,
+    "order": 5,
+    "status": "published",
+    "updatedAt": "2026-06-03T07:26:02.407Z",
+    "updatedBy": "system"
+  },
+  {
+    "section": "projects",
+    "enabled": true,
+    "order": 6,
+    "status": "published",
+    "updatedAt": "2026-06-03T07:26:02.407Z",
+    "updatedBy": "system"
+  },
+  {
+    "section": "achievements",
+    "enabled": true,
+    "order": 7,
+    "status": "published",
+    "updatedAt": "2026-06-03T07:45:47.253Z",
+    "updatedBy": "admin"
+  },
+  {
+    "section": "testimonials",
+    "enabled": true,
+    "order": 8,
+    "status": "published",
+    "updatedAt": "2026-06-03T07:26:02.407Z",
+    "updatedBy": "system"
+  },
+  {
+    "section": "contact",
+    "enabled": true,
+    "order": 9,
+    "status": "published",
+    "updatedAt": "2026-06-03T07:26:02.407Z",
+    "updatedBy": "system"
+  }
+]

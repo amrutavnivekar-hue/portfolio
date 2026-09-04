@@ -1,0 +1,217 @@
+import { CmsSectionSchema } from '@/lib/cms/types';
+
+export const cmsSchemaRegistry: CmsSectionSchema[] = [
+  {
+    id: 'profile',
+    label: 'Hero & Profile',
+    description: 'Manage hero content and profile information.',
+    xmlFile: 'profile.xml',
+    rootNode: 'profile',
+    previewTitleField: 'name',
+    fields: [
+      { key: 'name', label: 'Name', type: 'text', required: true, xmlPath: 'name' },
+      { key: 'role', label: 'Role', type: 'text', required: true, xmlPath: 'role' },
+      { key: 'title', label: 'Title', type: 'textarea', required: true, xmlPath: 'title' },
+      { key: 'bio', label: 'Biography', type: 'richtext', required: true, xmlPath: 'bio' },
+      { key: 'email', label: 'Email', type: 'text', required: true, xmlPath: 'email' },
+      { key: 'phone', label: 'Phone', type: 'text', required: true, xmlPath: 'phone' },
+      { key: 'location', label: 'Location', type: 'text', required: true, xmlPath: 'location' },
+      { key: 'linkedin', label: 'LinkedIn URL', type: 'url', xmlPath: 'linkedin' },
+      { key: 'github', label: 'GitHub URL', type: 'url', xmlPath: 'github' },
+      { key: 'twitter', label: 'Twitter URL', type: 'url', xmlPath: 'twitter' },
+      { key: 'image', label: 'Profile Image Path', type: 'media', xmlPath: 'image' },
+      { key: 'resume', label: 'Resume URL', type: 'url', xmlPath: 'resume' },
+    ],
+  },
+  {
+    id: 'experience',
+    label: 'Experience',
+    description: 'Manage work experience entries.',
+    xmlFile: 'experience.xml',
+    rootNode: 'experiences',
+    listNode: 'experience',
+    previewTitleField: 'role',
+    fields: [
+      {
+        key: 'experience',
+        label: 'Experience Entries',
+        type: 'list',
+        xmlPath: 'experience',
+        repeatableItemShape: [
+          { key: 'company', label: 'Company', type: 'text', required: true, xmlPath: 'company' },
+          { key: 'role', label: 'Role', type: 'text', required: true, xmlPath: 'role' },
+          { key: 'duration', label: 'Duration', type: 'text', required: true, xmlPath: 'duration' },
+          { key: 'technologies', label: 'Technologies', type: 'textarea', xmlPath: 'technologies' },
+          { key: 'description', label: 'Description', type: 'richtext', required: true, xmlPath: 'description' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'education',
+    label: 'Education',
+    description: 'Manage education records.',
+    xmlFile: 'education.xml',
+    rootNode: 'education',
+    listNode: 'degree',
+    previewTitleField: 'name',
+    fields: [
+      {
+        key: 'degree',
+        label: 'Degrees',
+        type: 'list',
+        xmlPath: 'degree',
+        repeatableItemShape: [
+          { key: 'name', label: 'Degree Name', type: 'text', required: true, xmlPath: 'name' },
+          { key: 'institution', label: 'Institution', type: 'text', required: true, xmlPath: 'institution' },
+          { key: 'year', label: 'Year/Duration', type: 'text', required: true, xmlPath: 'year' },
+          { key: 'score', label: 'Score', type: 'text', xmlPath: 'score' },
+          { key: 'coursework', label: 'Coursework', type: 'textarea', xmlPath: 'coursework' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'skills',
+    label: 'Skills',
+    description: 'Manage skill categories and proficiency levels.',
+    xmlFile: 'skills.xml',
+    rootNode: 'skills',
+    listNode: 'category',
+    previewTitleField: 'name',
+    fields: [
+      {
+        key: 'category',
+        label: 'Skill Categories',
+        type: 'list',
+        xmlPath: 'category',
+        repeatableItemShape: [
+          { key: 'name', label: 'Category Name', type: 'text', required: true, xmlPath: '$.name' },
+          {
+            key: 'skill',
+            label: 'Skills',
+            type: 'list',
+            xmlPath: 'skill',
+            repeatableItemShape: [
+              { key: 'name', label: 'Skill Name', type: 'text', required: true, xmlPath: '$.name' },
+              { key: 'level', label: 'Level (0-100)', type: 'number', required: true, xmlPath: '$.level' },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'certifications',
+    label: 'Certifications',
+    description: 'Manage certifications and credentials.',
+    xmlFile: 'certifications.xml',
+    rootNode: 'certifications',
+    listNode: 'certification',
+    previewTitleField: 'name',
+    fields: [
+      {
+        key: 'certification',
+        label: 'Certifications',
+        type: 'list',
+        xmlPath: 'certification',
+        repeatableItemShape: [
+          { key: 'name', label: 'Certification Name', type: 'text', required: true, xmlPath: 'name' },
+          { key: 'organization', label: 'Organization', type: 'text', required: true, xmlPath: 'organization' },
+          { key: 'date', label: 'Date', type: 'text', required: true, xmlPath: 'date' },
+          { key: 'link', label: 'Credential URL', type: 'url', xmlPath: 'link' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'projects',
+    label: 'Projects',
+    description: 'Manage portfolio projects.',
+    xmlFile: 'projects.xml',
+    rootNode: 'projects',
+    listNode: 'project',
+    previewTitleField: 'name',
+    fields: [
+      {
+        key: 'project',
+        label: 'Projects',
+        type: 'list',
+        xmlPath: 'project',
+        repeatableItemShape: [
+          { key: 'name', label: 'Project Name', type: 'text', required: true, xmlPath: 'name' },
+          { key: 'description', label: 'Description', type: 'richtext', required: true, xmlPath: 'description' },
+          { key: 'technologies', label: 'Technologies', type: 'textarea', xmlPath: 'technologies' },
+          { key: 'thumbnail', label: 'Thumbnail Path', type: 'media', xmlPath: 'thumbnail' },
+          { key: 'github', label: 'GitHub URL', type: 'url', xmlPath: 'github' },
+          { key: 'demo', label: 'Demo URL', type: 'url', xmlPath: 'demo' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'achievements',
+    label: 'Achievements',
+    description: 'Manage achievement counters.',
+    xmlFile: 'achievements.xml',
+    rootNode: 'achievements',
+    listNode: 'achievement',
+    previewTitleField: 'title',
+    fields: [
+      {
+        key: 'achievement',
+        label: 'Achievements',
+        type: 'list',
+        xmlPath: 'achievement',
+        repeatableItemShape: [
+          { key: 'title', label: 'Title', type: 'text', required: true, xmlPath: 'title' },
+          { key: 'count', label: 'Count/Value', type: 'text', required: true, xmlPath: 'count' },
+          { key: 'icon', label: 'Icon', type: 'text', xmlPath: 'icon' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'testimonials',
+    label: 'Testimonials',
+    description: 'Manage testimonial cards.',
+    xmlFile: 'testimonials.xml',
+    rootNode: 'testimonials',
+    listNode: 'testimonial',
+    previewTitleField: 'name',
+    fields: [
+      {
+        key: 'testimonial',
+        label: 'Testimonials',
+        type: 'list',
+        xmlPath: 'testimonial',
+        repeatableItemShape: [
+          { key: 'name', label: 'Name', type: 'text', required: true, xmlPath: 'name' },
+          { key: 'role', label: 'Role', type: 'text', required: true, xmlPath: 'role' },
+          { key: 'text', label: 'Testimonial', type: 'richtext', required: true, xmlPath: 'text' },
+          { key: 'image', label: 'Image Path', type: 'media', xmlPath: 'image' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'contact',
+    label: 'Contact',
+    description: 'Manage contact channels and social links.',
+    xmlFile: 'contact.xml',
+    rootNode: 'contact',
+    previewTitleField: 'email',
+    fields: [
+      { key: 'email', label: 'Email', type: 'text', required: true, xmlPath: 'email' },
+      { key: 'phone', label: 'Phone', type: 'text', required: true, xmlPath: 'phone' },
+      { key: 'linkedin', label: 'LinkedIn URL', type: 'url', xmlPath: 'linkedin' },
+      { key: 'github', label: 'GitHub URL', type: 'url', xmlPath: 'github' },
+      { key: 'twitter', label: 'Twitter URL', type: 'url', xmlPath: 'twitter' },
+      { key: 'location', label: 'Location', type: 'text', required: true, xmlPath: 'location' },
+    ],
+  },
+];
+
+export function getSchemaBySection(section: string) {
+  return cmsSchemaRegistry.find((item) => item.id === section);
+}

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<education>
+  <degree>
+    <name>Bachelor of Computer Applications</name>
+    <institution>Savitribai Phule Pune University</institution>
+    <year>Oct 2021 - June 2024</year>
+    <score>GPA: 8.36 / 10</score>
+    <coursework>Computer Fundamentals, Software Engineering, Database Management Systems</coursework>
+  </degree>
+</education>
