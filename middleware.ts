@@ -1,30 +1,37 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSessionCookieName, verifySessionToken } from '@/lib/cms/auth';
 
-function isPublicAdminPath(pathname: string) {
-  return pathname === '/admin/login' || pathname === '/api/admin/auth/login';
-}
+// Only track public portfolio pages — skip admin, API, static assets
+const TRACK_PATHS = /^\/(?!admin|api|_next|favicon|robots|sitemap)/;
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const isAdminPage = pathname.startsWith('/admin');
-  const isAdminApi = pathname.startsWith('/api/admin');
-  if (!isAdminPage && !isAdminApi) return NextResponse.next();
-  if (isPublicAdminPath(pathname)) return NextResponse.next();
 
-  const token = request.cookies.get(getSessionCookieName())?.value;
-  const session = await verifySessionToken(token);
-  if (session) return NextResponse.next();
+  if (TRACK_PATHS.test(pathname)) {
+    // Fire-and-forget — don't block the response
+    const url = request.nextUrl.clone();
+    url.pathname = '/api/track';
 
-  if (isAdminApi) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const payload = JSON.stringify({
+      path: pathname,
+      referrer: request.headers.get('referer') || '',
+      userAgent: request.headers.get('user-agent') || '',
+      ip:
+        request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+        request.headers.get('x-real-ip') ||
+        'unknown',
+    });
+
+    // Use waitUntil if available, else just fire
+    fetch(new URL('/api/track', request.url).toString(), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-internal': 'middleware' },
+      body: payload,
+    }).catch(() => {});
   }
 
-  const loginUrl = new URL('/admin/login', request.url);
-  loginUrl.searchParams.set('next', pathname);
-  return NextResponse.redirect(loginUrl);
+  return NextResponse.next();
 }
 
 export const config = {
-  matcher: ['/admin/:path*', '/api/admin/:path*'],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
 };

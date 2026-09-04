@@ -15,19 +15,38 @@ interface SectionItem {
   updatedBy: string | null;
 }
 
+const borderStyle: React.CSSProperties = {
+  border: '1px solid color-mix(in srgb, var(--text) 20%, transparent)',
+};
+
+const inputStyle: React.CSSProperties = {
+  background: 'var(--background)',
+  color: 'var(--text)',
+  border: '1px solid color-mix(in srgb, var(--primary) 50%, transparent)',
+  outline: 'none',
+};
+
+const ghostBtnStyle: React.CSSProperties = {
+  background: 'transparent',
+  color: 'var(--text)',
+  border: '1px solid color-mix(in srgb, var(--text) 30%, transparent)',
+};
+
 export default function ContentPage() {
   const [sections, setSections] = useState<SectionItem[]>([]);
   const [query, setQuery] = useState('');
 
   const load = async () => {
-    const res = await fetch('/api/admin/content/sections');
-    const data = await res.json();
-    setSections(data);
+    try {
+      const res = await fetch('/api/admin/content/sections');
+      const data = await res.json();
+      setSections(Array.isArray(data) ? data : []);
+    } catch {
+      setSections([]);
+    }
   };
 
-  useEffect(() => {
-    load();
-  }, []);
+  useEffect(() => { load(); }, []);
 
   const filtered = useMemo(
     () =>
@@ -66,59 +85,110 @@ export default function ContentPage() {
 
   return (
     <div className="space-y-4">
+      {/* Header row */}
       <div className="flex items-center justify-between gap-3">
-        <h2 className="text-2xl font-semibold">Section Builder</h2>
+        <h2 className="text-2xl font-bold" style={{ color: 'var(--text)' }}>Section Builder</h2>
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search sections..."
-          className="rounded-lg border border-white/10 bg-slate-950 px-3 py-2 text-sm"
+          className="rounded-lg px-3 py-2 text-sm"
+          style={inputStyle}
         />
       </div>
 
-      <div className="grid gap-4">
+      {/* Section cards */}
+      <div className="grid gap-3">
         {filtered.map((item) => (
-          <div key={item.id} className="rounded-xl border border-white/10 bg-slate-900/60 p-4">
+          <div
+            key={item.id}
+            className="rounded-xl p-4"
+            style={{ background: 'var(--surface)', ...borderStyle }}
+          >
             <div className="flex flex-wrap items-center justify-between gap-3">
+              {/* Info */}
               <div>
-                <h3 className="text-lg font-semibold">{item.label}</h3>
-                <p className="text-sm text-slate-400">{item.description}</p>
-                <p className="mt-1 text-xs text-slate-500">
-                  Fields: {item.fields} | Status: {item.status} | Updated by: {item.updatedBy || 'n/a'}
+                <h3 className="text-base font-semibold" style={{ color: 'var(--text)' }}>{item.label}</h3>
+                <p className="text-sm opacity-60">{item.description}</p>
+                <p className="mt-1 text-xs opacity-40">
+                  Fields: {item.fields} &nbsp;|&nbsp;
+                  <span style={{ color: item.status === 'published' ? 'var(--accent)' : 'var(--secondary)', fontWeight: 600 }}>
+                    {item.status}
+                  </span>
+                  &nbsp;|&nbsp; Updated by: {item.updatedBy || 'n/a'}
                 </p>
               </div>
+
+              {/* Actions */}
               <div className="flex flex-wrap gap-2">
+                {/* Edit */}
                 <Link
                   href={`/admin/content/${item.id}`}
-                  className="rounded bg-blue-600 px-3 py-2 text-xs font-semibold text-white"
+                  className="rounded px-3 py-1.5 text-xs font-semibold text-white transition-opacity hover:opacity-80"
+                  style={{ background: 'var(--primary)' }}
                 >
                   Edit
                 </Link>
+
+                {/* Preview — uses outline style so it's always visible */}
                 <Link
                   href={`/admin/content/${item.id}`}
-                  className="rounded border border-white/20 px-3 py-2 text-xs"
+                  className="rounded px-3 py-1.5 text-xs font-medium transition-opacity hover:opacity-80"
+                  style={ghostBtnStyle}
                 >
                   Preview
                 </Link>
-                <button onClick={() => action('publish', item.id)} className="rounded bg-emerald-600 px-3 py-2 text-xs">
+
+                {/* Publish */}
+                <button
+                  onClick={() => action('publish', item.id)}
+                  className="rounded px-3 py-1.5 text-xs font-medium text-white transition-opacity hover:opacity-80"
+                  style={{ background: 'var(--accent)' }}
+                >
                   Publish
                 </button>
-                <button onClick={() => action('duplicate', item.id)} className="rounded bg-amber-600 px-3 py-2 text-xs">
+
+                {/* Duplicate */}
+                <button
+                  onClick={() => action('duplicate', item.id)}
+                  className="rounded px-3 py-1.5 text-xs font-medium text-white transition-opacity hover:opacity-80"
+                  style={{ background: 'var(--secondary)' }}
+                >
                   Duplicate
                 </button>
-                <button onClick={() => action('delete', item.id)} className="rounded bg-red-600 px-3 py-2 text-xs">
+
+                {/* Delete */}
+                <button
+                  onClick={() => action('delete', item.id)}
+                  className="rounded px-3 py-1.5 text-xs font-medium text-white transition-opacity hover:opacity-80"
+                  style={{ background: '#dc2626' }}
+                >
                   Delete
                 </button>
-                <button onClick={() => move(item.id, -1)} className="rounded border border-white/20 px-3 py-2 text-xs">
-                  Up
+
+                {/* Up / Down */}
+                <button
+                  onClick={() => move(item.id, -1)}
+                  className="rounded px-3 py-1.5 text-xs font-medium transition-opacity hover:opacity-80"
+                  style={ghostBtnStyle}
+                >
+                  ↑
                 </button>
-                <button onClick={() => move(item.id, 1)} className="rounded border border-white/20 px-3 py-2 text-xs">
-                  Down
+                <button
+                  onClick={() => move(item.id, 1)}
+                  className="rounded px-3 py-1.5 text-xs font-medium transition-opacity hover:opacity-80"
+                  style={ghostBtnStyle}
+                >
+                  ↓
                 </button>
               </div>
             </div>
           </div>
         ))}
+
+        {filtered.length === 0 && (
+          <p className="text-sm opacity-50">No sections found.</p>
+        )}
       </div>
     </div>
   );

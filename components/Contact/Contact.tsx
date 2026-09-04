@@ -12,6 +12,8 @@ export default function Contact() {
     email: '',
     message: '',
   });
+  const [submitting, setSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
   useEffect(() => {
     fetch('/api/contact')
@@ -23,12 +25,24 @@ export default function Contact() {
       .catch(err => setError(err.message));
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
-    console.log('Form submitted:', formData);
-    alert('Thank you for your message! I will get back to you soon.');
-    setFormData({ name: '', email: '', message: '' });
+    setSubmitting(true);
+    setSubmitStatus('idle');
+    try {
+      const res = await fetch('/api/contact/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      if (!res.ok) throw new Error('Failed to send');
+      setSubmitStatus('success');
+      setFormData({ name: '', email: '', message: '' });
+    } catch {
+      setSubmitStatus('error');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -216,12 +230,20 @@ export default function Contact() {
 
             <motion.button
               type="submit"
-              className="w-full btn-primary"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+              className="w-full btn-primary disabled:opacity-60"
+              whileHover={{ scale: submitting ? 1 : 1.02 }}
+              whileTap={{ scale: submitting ? 1 : 0.98 }}
+              disabled={submitting}
             >
-              Send Message
+              {submitting ? 'Sending...' : 'Send Message'}
             </motion.button>
+
+            {submitStatus === 'success' && (
+              <p className="text-center text-sm text-green-400">✓ Message sent! I'll get back to you soon.</p>
+            )}
+            {submitStatus === 'error' && (
+              <p className="text-center text-sm text-red-400">Something went wrong. Please try again.</p>
+            )}
           </form>
         </motion.div>
       </div>

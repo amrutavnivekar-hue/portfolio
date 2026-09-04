@@ -68,4 +68,6 @@ export function applyTheme(key: ThemeKey) {
   root.style.setProperty('--accent', theme.accent);
   root.style.setProperty('--text', theme.text);
   root.setAttribute('data-theme', key);
+  // Persist so theme survives navigation and page reloads
+  localStorage.setItem('theme', key);
 }
