@@ -1,13 +1,23 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-if (!supabaseUrl || !supabaseKey) {
-  throw new Error('Missing Supabase environment variables: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY');
+if (!supabaseUrl) {
+  throw new Error('Missing env var: NEXT_PUBLIC_SUPABASE_URL');
+}
+if (!supabaseAnonKey) {
+  throw new Error('Missing env var: NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY');
 }
 
-export const supabase = createClient(supabaseUrl, supabaseKey);
+// Server-side admin client — uses service role key to bypass RLS
+// Falls back to anon key if service key is missing (dev only)
+const adminKey = supabaseServiceKey || supabaseAnonKey;
+export const supabaseAdmin = createClient(supabaseUrl, adminKey);
+
+// Public client — anon key, for browser-side use only
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 /**
  * query() — drop-in replacement for the old mysql2 query helper.
@@ -24,7 +34,9 @@ export async function queryTable(
     single?: boolean;
   }
 ) {
-  let q = supabase.from(table).select(options?.select ?? '*');
+  // Use admin client on server side to bypass RLS
+  const client = typeof window === 'undefined' ? supabaseAdmin : supabase;
+  let q = client.from(table).select(options?.select ?? '*');
 
   if (options?.eq) {
     q = q.eq(options.eq.column, options.eq.value) as any;

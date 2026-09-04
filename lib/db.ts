@@ -9,10 +9,10 @@
  * queryTable() helper, or falls back to supabase.rpc() for complex SQL.
  */
 
-import { supabase, queryTable } from './supabase';
+import { supabase, supabaseAdmin, queryTable } from './supabase';
 
-// Re-export supabase client for direct use
-export { supabase };
+// Re-export supabase clients for direct use
+export { supabase, supabaseAdmin };
 
 /**
  * High-level query helper — mirrors the old mysql2 query() API.
@@ -78,7 +78,7 @@ export async function query(
     const [, table, wherePart] = selectWhere;
     // Extract column names from "col = ? AND col2 = ?" pattern
     const conditions = wherePart.split(/\s+AND\s+/i);
-    let q = supabase.from(table).select('*');
+    let q = supabaseAdmin.from(table).select('*');
     conditions.forEach((cond, idx) => {
       const colMatch = cond.match(/(\w+)\s*=\s*\?/);
       if (colMatch) {
@@ -94,7 +94,7 @@ export async function query(
   const selectIdLast = sql.match(/^SELECT id FROM (\w+)\s+ORDER BY id DESC LIMIT 1\s*$/i);
   if (selectIdLast) {
     const [, table] = selectIdLast;
-    const { data, error } = await supabase.from(table).select('id').order('id', { ascending: false }).limit(1);
+    const { data, error } = await supabaseAdmin.from(table).select('id').order('id', { ascending: false }).limit(1);
     if (error) throw new Error(error.message);
     return data ?? [];
   }
