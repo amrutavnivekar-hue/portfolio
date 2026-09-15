@@ -33,6 +33,53 @@ import {
   getContact as getXmlContact,
 } from './xmlParser';
 
+import {
+  defaultProfile,
+  defaultContact,
+  defaultEducation,
+  defaultCertifications,
+  defaultTestimonials,
+  defaultExperiences,
+  defaultSkillCategories,
+  defaultProjects,
+  defaultAchievements,
+} from './defaultData';
+
+function getMemoryFallback(table: string): any[] {
+  switch (table.toLowerCase()) {
+    case 'profile':
+      return [defaultProfile];
+    case 'experiences':
+      return defaultExperiences;
+    case 'skill_categories':
+      return defaultSkillCategories.map((c, i) => ({ id: i + 1, name: c.name, display_order: i + 1 }));
+    case 'skills':
+      return defaultSkillCategories.flatMap((c, i) =>
+        c.skills.map((sk, j) => ({
+          id: (i + 1) * 100 + j,
+          category_id: i + 1,
+          name: sk.name,
+          level: sk.level,
+          display_order: j + 1,
+        }))
+      );
+    case 'education':
+      return defaultEducation;
+    case 'certifications':
+      return defaultCertifications;
+    case 'projects':
+      return defaultProjects;
+    case 'achievements':
+      return defaultAchievements;
+    case 'testimonials':
+      return defaultTestimonials;
+    case 'contact':
+      return [defaultContact];
+    default:
+      return [];
+  }
+}
+
 async function getXmlFallback(table: string): Promise<any[]> {
   try {
     switch (table.toLowerCase()) {
@@ -118,11 +165,21 @@ async function getXmlFallback(table: string): Promise<any[]> {
 }
 
 async function safeQueryTable(table: string, options?: any): Promise<any[]> {
-  const data = await queryTable(table, options);
-  if (Array.isArray(data) && data.length > 0) {
-    return data;
+  try {
+    const data = await queryTable(table, options);
+    if (Array.isArray(data) && data.length > 0) {
+      return data;
+    }
+  } catch {
+    // fallback
   }
-  return getXmlFallback(table);
+
+  const xmlData = await getXmlFallback(table);
+  if (Array.isArray(xmlData) && xmlData.length > 0) {
+    return xmlData;
+  }
+
+  return getMemoryFallback(table);
 }
 
 export async function query(

@@ -1,18 +1,10 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co';
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || 'placeholder-anon-key';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-if (!supabaseUrl) {
-  throw new Error('Missing env var: NEXT_PUBLIC_SUPABASE_URL');
-}
-if (!supabaseAnonKey) {
-  throw new Error('Missing env var: NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY');
-}
-
 // Server-side admin client — uses service role key to bypass RLS
-// Falls back to anon key if service key is missing (dev only)
 const adminKey = supabaseServiceKey || supabaseAnonKey;
 export const supabaseAdmin = createClient(supabaseUrl, adminKey);
 
