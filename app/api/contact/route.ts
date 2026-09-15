@@ -6,8 +6,7 @@ export async function GET() {
   try {
     const result = (await query('SELECT * FROM contact ORDER BY id DESC LIMIT 1')) as any[];
     return NextResponse.json(result?.[0] || defaultContact);
-  } catch (error) {
-    console.error('Error loading contact data:', error);
+  } catch {
     return NextResponse.json(defaultContact);
   }
 }

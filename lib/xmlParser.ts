@@ -10,8 +10,7 @@ export async function parseXML<T>(filename: string): Promise<T | null> {
     const xmlContent = fs.readFileSync(filePath, 'utf-8');
     const result = await parser.parseStringPromise(xmlContent);
     return result as T;
-  } catch (error) {
-    console.error(`Error parsing ${filename}:`, error);
+  } catch {
     return null;
   }
 }
@@ -23,8 +22,7 @@ export async function writeXML(filename: string, data: any): Promise<boolean> {
     const filePath = path.join(process.cwd(), 'data', filename);
     fs.writeFileSync(filePath, xml, 'utf-8');
     return true;
-  } catch (error) {
-    console.error(`Error writing ${filename}:`, error);
+  } catch {
     return false;
   }
 }

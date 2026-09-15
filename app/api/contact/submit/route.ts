@@ -14,13 +14,11 @@ export async function POST(request: NextRequest) {
       .insert({ name: String(name), email: String(email), message: String(message) });
 
     if (error) {
-      console.error('contact_submissions insert error:', error.message);
       return NextResponse.json({ error: 'Failed to save message.' }, { status: 500 });
     }
 
     return NextResponse.json({ success: true });
-  } catch (err) {
-    console.error('Contact submit error:', err);
+  } catch {
     return NextResponse.json({ error: 'Internal server error.' }, { status: 500 });
   }
 }

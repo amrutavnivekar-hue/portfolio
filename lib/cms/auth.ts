@@ -117,8 +117,7 @@ export async function verifySessionToken(token: string | undefined | null): Prom
     }
     
     return { username: payload.username, role: payload.role };
-  } catch (err) {
-    console.error('Session verification error:', err);
+  } catch {
     return null;
   }
 }

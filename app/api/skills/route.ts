@@ -27,9 +27,7 @@ export async function GET() {
         $: { name: sk.name, level: sk.level },
       })),
     }));
-    return NextResponse.json(fallbackResult);
-  } catch (error) {
-    console.error('Error loading skills data:', error);
+  } catch {
     const fallbackResult = defaultSkillCategories.map((c) => ({
       $: { name: c.name },
       skill: c.skills.map((sk) => ({

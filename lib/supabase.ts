@@ -43,13 +43,11 @@ export async function queryTable(
     const { data, error } = await (options?.single ? (q as any).single() : q);
 
     if (error) {
-      console.warn(`[supabase] queryTable on "${table}":`, error.message);
       return [];
     }
 
     return data || [];
-  } catch (err: any) {
-    console.warn(`[supabase] queryTable error on "${table}":`, err?.message || err);
+  } catch {
     return [];
   }
 }

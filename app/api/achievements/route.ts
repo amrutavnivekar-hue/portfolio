@@ -6,8 +6,7 @@ export async function GET() {
   try {
     const result = (await query('SELECT * FROM achievements ORDER BY display_order ASC')) as any[];
     return NextResponse.json(result?.length ? result : defaultAchievements);
-  } catch (error) {
-    console.error('Error loading achievements data:', error);
+  } catch {
     return NextResponse.json(defaultAchievements);
   }
 }

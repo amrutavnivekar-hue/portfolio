@@ -23,8 +23,7 @@ export async function GET(request: NextRequest) {
 
     const xmlContent = fs.readFileSync(filePath, 'utf-8');
     return NextResponse.json({ xml: xmlContent });
-  } catch (error) {
-    console.error('Error reading raw XML:', error);
+  } catch {
     return NextResponse.json({ error: 'Failed to load raw XML data' }, { status: 500 });
   }
 }
@@ -55,8 +54,7 @@ export async function POST(request: NextRequest) {
 
     fs.writeFileSync(filePath, xml, 'utf-8');
     return NextResponse.json({ success: true });
-  } catch (error) {
-    console.error('Error writing raw XML:', error);
+  } catch {
     return NextResponse.json({ error: 'Failed to save XML data' }, { status: 500 });
   }
 }

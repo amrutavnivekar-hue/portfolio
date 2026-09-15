@@ -6,8 +6,7 @@ export async function GET() {
   try {
     const result = (await query('SELECT * FROM testimonials ORDER BY display_order ASC')) as any[];
     return NextResponse.json(result?.length ? result : defaultTestimonials);
-  } catch (error) {
-    console.error('Error loading testimonials data:', error);
+  } catch {
     return NextResponse.json(defaultTestimonials);
   }
 }
