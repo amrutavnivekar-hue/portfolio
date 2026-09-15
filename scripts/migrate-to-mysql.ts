@@ -17,7 +17,6 @@ async function parseXmlFile(filename: string) {
 
 // Migrate Profile
 async function migrateProfile() {
-  console.log('Migrating Profile...');
   const data = await parseXmlFile('profile.xml');
   const profile = data.profile;
   
@@ -39,14 +38,12 @@ async function migrateProfile() {
     profile.resume[0]
   ]);
   
-  console.log('Profile migrated successfully');
   const result = await query('SELECT id FROM profile ORDER BY id DESC LIMIT 1') as any[];
   return result[0].id;
 }
 
 // Migrate Contact
 async function migrateContact(profileId: number) {
-  console.log('Migrating Contact...');
   const data = await parseXmlFile('contact.xml');
   const contact = data.contact;
   
@@ -62,13 +59,10 @@ async function migrateContact(profileId: number) {
     contact.twitter[0],
     contact.location[0]
   ]);
-  
-  console.log('Contact migrated successfully');
 }
 
 // Migrate Experiences
 async function migrateExperiences(profileId: number) {
-  console.log('Migrating Experiences...');
   const data = await parseXmlFile('experience.xml');
   const experiences = data.experiences.experience;
   
@@ -87,13 +81,10 @@ async function migrateExperiences(profileId: number) {
       i
     ]);
   }
-  
-  console.log('Experiences migrated successfully');
 }
 
 // Migrate Education
 async function migrateEducation(profileId: number) {
-  console.log('Migrating Education...');
   const data = await parseXmlFile('education.xml');
   const degrees = data.education.degree;
   
@@ -112,13 +103,10 @@ async function migrateEducation(profileId: number) {
       i
     ]);
   }
-  
-  console.log('Education migrated successfully');
 }
 
 // Migrate Skills
 async function migrateSkills() {
-  console.log('Migrating Skills...');
   const data = await parseXmlFile('skills.xml');
   const categories = data.skills.category;
   
@@ -145,13 +133,10 @@ async function migrateSkills() {
       `, [categoryId, skill.$.name, parseInt(skill.$.level), j]);
     }
   }
-  
-  console.log('Skills migrated successfully');
 }
 
 // Migrate Certifications
 async function migrateCertifications(profileId: number) {
-  console.log('Migrating Certifications...');
   const data = await parseXmlFile('certifications.xml');
   const certifications = data.certifications.certification;
   
@@ -169,13 +154,10 @@ async function migrateCertifications(profileId: number) {
       i
     ]);
   }
-  
-  console.log('Certifications migrated successfully');
 }
 
 // Migrate Projects
 async function migrateProjects(profileId: number) {
-  console.log('Migrating Projects...');
   const data = await parseXmlFile('projects.xml');
   const projects = data.projects.project;
   
@@ -195,13 +177,10 @@ async function migrateProjects(profileId: number) {
       i
     ]);
   }
-  
-  console.log('Projects migrated successfully');
 }
 
 // Migrate Achievements
 async function migrateAchievements(profileId: number) {
-  console.log('Migrating Achievements...');
   const data = await parseXmlFile('achievements.xml');
   const achievements = data.achievements.achievement;
   
@@ -218,13 +197,10 @@ async function migrateAchievements(profileId: number) {
       i
     ]);
   }
-  
-  console.log('Achievements migrated successfully');
 }
 
 // Migrate Testimonials
 async function migrateTestimonials(profileId: number) {
-  console.log('Migrating Testimonials...');
   const data = await parseXmlFile('testimonials.xml');
   const testimonials = data.testimonials.testimonial;
   
@@ -242,19 +218,12 @@ async function migrateTestimonials(profileId: number) {
       i
     ]);
   }
-  
-  console.log('Testimonials migrated successfully');
 }
 
 // Main migration function
 async function migrateAll() {
   try {
-    console.log('Starting migration from XML to MySQL...');
-    
-    // Migrate profile first to get profile_id
     const profileId = await migrateProfile();
-    
-    // Migrate related data
     await migrateContact(profileId);
     await migrateExperiences(profileId);
     await migrateEducation(profileId);
@@ -262,13 +231,8 @@ async function migrateAll() {
     await migrateProjects(profileId);
     await migrateAchievements(profileId);
     await migrateTestimonials(profileId);
-    
-    // Migrate skills (doesn't need profile_id)
     await migrateSkills();
-    
-    console.log('Migration completed successfully!');
-  } catch (error) {
-    console.error('Migration failed:', error);
+  } catch {
     process.exit(1);
   }
 }
