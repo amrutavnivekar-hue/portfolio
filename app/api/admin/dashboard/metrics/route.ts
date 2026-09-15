@@ -18,30 +18,24 @@ export async function GET(request: NextRequest) {
   const totalRevisions = revisions.length;
   const last7Days = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
 
-  // Fetch contact submissions count
+  // Fetch counts in parallel for fast response
   let unreadMessages = 0;
   let totalMessages = 0;
-  try {
-    const { count: total } = await supabaseAdmin
-      .from('contact_submissions')
-      .select('*', { count: 'exact', head: true });
-    const { count: unread } = await supabaseAdmin
-      .from('contact_submissions')
-      .select('*', { count: 'exact', head: true })
-      .eq('read', false);
-    totalMessages = total ?? 0;
-    unreadMessages = unread ?? 0;
-  } catch { /* table may not exist yet */ }
-
-  // Fetch visitor count (last 7 days)
   let visitorsThisWeek = 0;
+
   try {
-    const { count } = await supabaseAdmin
-      .from('visitor_logs')
-      .select('*', { count: 'exact', head: true })
-      .gte('created_at', last7Days);
-    visitorsThisWeek = count ?? 0;
-  } catch { /* table may not exist yet */ }
+    const [totalRes, unreadRes, visitorRes] = await Promise.all([
+      supabaseAdmin.from('contact_submissions').select('*', { count: 'exact', head: true }),
+      supabaseAdmin.from('contact_submissions').select('*', { count: 'exact', head: true }).eq('read', false),
+      supabaseAdmin.from('visitor_logs').select('*', { count: 'exact', head: true }).gte('created_at', last7Days),
+    ]);
+
+    totalMessages = totalRes.count ?? 0;
+    unreadMessages = unreadRes.count ?? 0;
+    visitorsThisWeek = visitorRes.count ?? 0;
+  } catch {
+    // Graceful fallback if tables are empty/unavailable
+  }
 
   // Recent activity (last 10)
   const recentActivity = Array.isArray(activity)

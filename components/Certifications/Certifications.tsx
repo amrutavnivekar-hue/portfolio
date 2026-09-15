@@ -4,11 +4,15 @@ import { motion } from 'framer-motion';
 import { FaCertificate, FaExternalLinkAlt, FaCalendar } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 
-export default function Certifications() {
-  const [certifications, setCertifications] = useState<any[]>([]);
+export default function Certifications({ certifications: initialCertifications }: { certifications?: any[] }) {
+  const [certifications, setCertifications] = useState<any[]>(initialCertifications || []);
   const [error, setError] = useState('');
 
   useEffect(() => {
+    if (initialCertifications && initialCertifications.length > 0) {
+      setCertifications(initialCertifications);
+      return;
+    }
     fetch('/api/certifications')
       .then(res => {
         if (!res.ok) throw new Error('Failed to load');
@@ -16,7 +20,7 @@ export default function Certifications() {
       })
       .then(setCertifications)
       .catch(err => setError(err.message));
-  }, []);
+  }, [initialCertifications]);
 
   const containerVariants = {
     hidden: { opacity: 0 },

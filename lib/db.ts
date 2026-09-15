@@ -21,6 +21,110 @@ export { supabase, supabaseAdmin };
  * descriptor object instead of raw SQL. All existing call sites in this
  * project are simple SELECTs so we handle them directly.
  */
+import {
+  getProfile as getXmlProfile,
+  getExperience as getXmlExperience,
+  getEducation as getXmlEducation,
+  getSkills as getXmlSkills,
+  getCertifications as getXmlCertifications,
+  getProjects as getXmlProjects,
+  getAchievements as getXmlAchievements,
+  getTestimonials as getXmlTestimonials,
+  getContact as getXmlContact,
+} from './xmlParser';
+
+async function getXmlFallback(table: string): Promise<any[]> {
+  try {
+    switch (table.toLowerCase()) {
+      case 'profile': {
+        const p: any = await getXmlProfile();
+        return p?.profile ? [p.profile] : (p ? [p] : []);
+      }
+      case 'experiences': {
+        const ex: any = await getXmlExperience();
+        return Array.isArray(ex) ? ex : [ex];
+      }
+      case 'skill_categories': {
+        const cats: any = await getXmlSkills();
+        return (Array.isArray(cats) ? cats : [cats]).filter(Boolean).map((c: any, i: number) => ({
+          id: i + 1,
+          name: c.name || '',
+          display_order: i + 1,
+        }));
+      }
+      case 'skills': {
+        const cats: any = await getXmlSkills();
+        const arr = Array.isArray(cats) ? cats : [cats];
+        const flatSkills: any[] = [];
+        arr.filter(Boolean).forEach((c: any, i: number) => {
+          const sks = Array.isArray(c.skill) ? c.skill : (c.skill ? [c.skill] : []);
+          sks.forEach((sk: any, j: number) => {
+            flatSkills.push({
+              id: (i + 1) * 100 + j,
+              category_id: i + 1,
+              name: sk.name || '',
+              level: Number(sk.level || 0),
+              display_order: j + 1,
+            });
+          });
+        });
+        return flatSkills;
+      }
+      case 'education': {
+        const ed: any = await getXmlEducation();
+        const list = Array.isArray(ed) ? ed : [ed];
+        return list.filter(Boolean).map((d: any, i: number) => ({
+          id: i + 1,
+          degree_name: d.name || '',
+          institution: d.institution || '',
+          duration: d.year || '',
+          score: d.score || '',
+          display_order: i + 1,
+        }));
+      }
+      case 'certifications': {
+        const certs: any = await getXmlCertifications();
+        return (Array.isArray(certs) ? certs : [certs]).filter(Boolean);
+      }
+      case 'projects': {
+        const projs: any = await getXmlProjects();
+        return (Array.isArray(projs) ? projs : [projs]).filter(Boolean);
+      }
+      case 'achievements': {
+        const achs: any = await getXmlAchievements();
+        return (Array.isArray(achs) ? achs : [achs]).filter(Boolean);
+      }
+      case 'testimonials': {
+        const tests: any = await getXmlTestimonials();
+        const list = Array.isArray(tests) ? tests : [tests];
+        return list.filter(Boolean).map((t: any, i: number) => ({
+          id: i + 1,
+          author_name: t.name || '',
+          author_role: t.role || '',
+          text: t.text || '',
+          display_order: i + 1,
+        }));
+      }
+      case 'contact': {
+        const ct: any = await getXmlContact();
+        return ct?.contact ? [ct.contact] : (ct ? [ct] : []);
+      }
+      default:
+        return [];
+    }
+  } catch {
+    return [];
+  }
+}
+
+async function safeQueryTable(table: string, options?: any): Promise<any[]> {
+  const data = await queryTable(table, options);
+  if (Array.isArray(data) && data.length > 0) {
+    return data;
+  }
+  return getXmlFallback(table);
+}
+
 export async function query(
   sqlOrDescriptor: string | { table: string; eq?: { column: string; value: any }; order?: string; limit?: number },
   params?: any[]
@@ -28,11 +132,11 @@ export async function query(
   // Structured call (new style)
   if (typeof sqlOrDescriptor === 'object') {
     const { table, eq, order, limit } = sqlOrDescriptor;
-    return queryTable(table, {
+    return safeQueryTable(table, {
       order: order ? { column: order, ascending: true } : undefined,
       eq,
       limit,
-    }) as Promise<any[]>;
+    });
   }
 
   // Legacy raw SQL call — parse the simple patterns used in this project
@@ -42,65 +146,70 @@ export async function query(
   const selectAllOrder = sql.match(/^SELECT \* FROM (\w+)\s+ORDER BY (\w+) ASC\s*$/i);
   if (selectAllOrder) {
     const [, table, orderCol] = selectAllOrder;
-    return queryTable(table, { order: { column: orderCol, ascending: true } }) as Promise<any[]>;
+    return safeQueryTable(table, { order: { column: orderCol, ascending: true } });
   }
 
   // Pattern: SELECT * FROM <table> ORDER BY <col> DESC LIMIT <n>
   const selectLimitDesc = sql.match(/^SELECT \* FROM (\w+)\s+ORDER BY (\w+) DESC LIMIT (\d+)\s*$/i);
   if (selectLimitDesc) {
     const [, table, orderCol, lim] = selectLimitDesc;
-    return queryTable(table, {
+    return safeQueryTable(table, {
       order: { column: orderCol, ascending: false },
       limit: parseInt(lim),
-    }) as Promise<any[]>;
+    });
   }
 
   // Pattern: SELECT * FROM <table> ORDER BY id DESC LIMIT <n>
   const selectOrderLimit = sql.match(/^SELECT \* FROM (\w+)\s+ORDER BY (\w+) DESC\s+LIMIT (\d+)\s*$/i);
   if (selectOrderLimit) {
     const [, table, orderCol, lim] = selectOrderLimit;
-    return queryTable(table, {
+    return safeQueryTable(table, {
       order: { column: orderCol, ascending: false },
       limit: parseInt(lim),
-    }) as Promise<any[]>;
+    });
   }
 
   // Pattern: SELECT * FROM <table>  (no order/limit)
   const selectAll = sql.match(/^SELECT \* FROM (\w+)\s*$/i);
   if (selectAll) {
     const [, table] = selectAll;
-    return queryTable(table) as Promise<any[]>;
+    return safeQueryTable(table);
   }
 
   // Pattern: SELECT * FROM <table> WHERE <col> = ? AND <col2> = ?
   const selectWhere = sql.match(/^SELECT \* FROM (\w+)\s+WHERE (.+)$/i);
   if (selectWhere && params?.length) {
     const [, table, wherePart] = selectWhere;
-    // Extract column names from "col = ? AND col2 = ?" pattern
     const conditions = wherePart.split(/\s+AND\s+/i);
-    let q = supabaseAdmin.from(table).select('*');
-    conditions.forEach((cond, idx) => {
-      const colMatch = cond.match(/(\w+)\s*=\s*\?/);
-      if (colMatch) {
-        q = q.eq(colMatch[1], params[idx]) as any;
-      }
-    });
-    const { data, error } = await q;
-    if (error) throw new Error(error.message);
-    return data ?? [];
+    try {
+      let q = supabaseAdmin.from(table).select('*');
+      conditions.forEach((cond, idx) => {
+        const colMatch = cond.match(/(\w+)\s*=\s*\?/);
+        if (colMatch) {
+          q = q.eq(colMatch[1], params[idx]) as any;
+        }
+      });
+      const { data, error } = await q;
+      if (!error && data?.length) return data;
+    } catch {
+      // fallback below
+    }
+    return getXmlFallback(table);
   }
 
   // Pattern: SELECT id FROM <table> ORDER BY id DESC LIMIT 1
   const selectIdLast = sql.match(/^SELECT id FROM (\w+)\s+ORDER BY id DESC LIMIT 1\s*$/i);
   if (selectIdLast) {
     const [, table] = selectIdLast;
-    const { data, error } = await supabaseAdmin.from(table).select('id').order('id', { ascending: false }).limit(1);
-    if (error) throw new Error(error.message);
-    return data ?? [];
+    try {
+      const { data, error } = await supabaseAdmin.from(table).select('id').order('id', { ascending: false }).limit(1);
+      if (!error && data?.length) return data;
+    } catch {
+      // fallback
+    }
+    return [{ id: 1 }];
   }
 
-  // Fallback: log and return empty (avoids crashing on INSERT/UPDATE from migrate script)
-  console.warn('[db.ts] Unhandled SQL pattern, returning []. SQL:', sql.substring(0, 120));
   return [];
 }
 

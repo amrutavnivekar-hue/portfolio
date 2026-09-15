@@ -34,28 +34,32 @@ export async function queryTable(
     single?: boolean;
   }
 ) {
-  // Use admin client on server side to bypass RLS
-  const client = typeof window === 'undefined' ? supabaseAdmin : supabase;
-  let q = client.from(table).select(options?.select ?? '*');
+  try {
+    const client = typeof window === 'undefined' ? supabaseAdmin : supabase;
+    let q = client.from(table).select(options?.select ?? '*');
 
-  if (options?.eq) {
-    q = q.eq(options.eq.column, options.eq.value) as any;
-  }
-  if (options?.order) {
-    q = q.order(options.order.column, { ascending: options.order.ascending ?? true }) as any;
-  }
-  if (options?.limit) {
-    q = q.limit(options.limit) as any;
-  }
+    if (options?.eq) {
+      q = q.eq(options.eq.column, options.eq.value) as any;
+    }
+    if (options?.order) {
+      q = q.order(options.order.column, { ascending: options.order.ascending ?? true }) as any;
+    }
+    if (options?.limit) {
+      q = q.limit(options.limit) as any;
+    }
 
-  const { data, error } = await (options?.single ? (q as any).single() : q);
+    const { data, error } = await (options?.single ? (q as any).single() : q);
 
-  if (error) {
-    console.error(`Supabase query error on table "${table}":`, error.message);
-    throw new Error(error.message);
+    if (error) {
+      console.warn(`[supabase] queryTable on "${table}":`, error.message);
+      return [];
+    }
+
+    return data || [];
+  } catch (err: any) {
+    console.warn(`[supabase] queryTable error on "${table}":`, err?.message || err);
+    return [];
   }
-
-  return data;
 }
 
 export default supabase;

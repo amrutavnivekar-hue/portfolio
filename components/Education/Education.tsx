@@ -4,11 +4,15 @@ import { motion } from 'framer-motion';
 import { FaGraduationCap, FaUniversity, FaCalendar } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 
-export default function Education() {
-  const [education, setEducation] = useState<any[]>([]);
+export default function Education({ education: initialEducation }: { education?: any[] }) {
+  const [education, setEducation] = useState<any[]>(initialEducation || []);
   const [error, setError] = useState('');
 
   useEffect(() => {
+    if (initialEducation && initialEducation.length > 0) {
+      setEducation(initialEducation);
+      return;
+    }
     fetch('/api/education')
       .then(res => {
         if (!res.ok) throw new Error('Failed to load');
@@ -16,7 +20,7 @@ export default function Education() {
       })
       .then(setEducation)
       .catch(err => setError(err.message));
-  }, []);
+  }, [initialEducation]);
 
   const containerVariants = {
     hidden: { opacity: 0 },

@@ -4,8 +4,8 @@ import { motion } from 'framer-motion';
 import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaLinkedin, FaGithub, FaTwitter } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 
-export default function Contact() {
-  const [contact, setContact] = useState<any>(null);
+export default function Contact({ contact: initialContact }: { contact?: any }) {
+  const [contact, setContact] = useState<any>(initialContact || null);
   const [error, setError] = useState('');
   const [formData, setFormData] = useState({
     name: '',
@@ -16,6 +16,10 @@ export default function Contact() {
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
   useEffect(() => {
+    if (initialContact) {
+      setContact(initialContact);
+      return;
+    }
     fetch('/api/contact')
       .then(res => {
         if (!res.ok) throw new Error('Failed to load');
@@ -23,7 +27,7 @@ export default function Contact() {
       })
       .then(setContact)
       .catch(err => setError(err.message));
-  }, []);
+  }, [initialContact]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

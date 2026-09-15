@@ -4,11 +4,15 @@ import { motion } from 'framer-motion';
 import { FaGithub, FaLinkedin, FaTwitter, FaDownload, FaEnvelope } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 
-export default function Hero() {
-  const [profile, setProfile] = useState<any>(null);
+export default function Hero({ profile: initialProfile }: { profile?: any }) {
+  const [profile, setProfile] = useState<any>(initialProfile || null);
   const [error, setError] = useState('');
 
   useEffect(() => {
+    if (initialProfile) {
+      setProfile(initialProfile);
+      return;
+    }
     fetch('/api/profile')
       .then(res => {
         if (!res.ok) throw new Error('Failed to load');
@@ -16,7 +20,7 @@ export default function Hero() {
       })
       .then(setProfile)
       .catch(err => setError(err.message));
-  }, []);
+  }, [initialProfile]);
 
   if (error) {
     return (

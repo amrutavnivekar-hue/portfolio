@@ -4,12 +4,16 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FaQuoteLeft, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 
-export default function Testimonials() {
-  const [testimonials, setTestimonials] = useState<any[]>([]);
+export default function Testimonials({ testimonials: initialTestimonials }: { testimonials?: any[] }) {
+  const [testimonials, setTestimonials] = useState<any[]>(initialTestimonials || []);
   const [error, setError] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
+    if (initialTestimonials && initialTestimonials.length > 0) {
+      setTestimonials(initialTestimonials);
+      return;
+    }
     fetch('/api/testimonials')
       .then(res => {
         if (!res.ok) throw new Error('Failed to load');
@@ -17,7 +21,7 @@ export default function Testimonials() {
       })
       .then(setTestimonials)
       .catch(err => setError(err.message));
-  }, []);
+  }, [initialTestimonials]);
 
   const nextTestimonial = () => {
     setCurrentIndex((prev) => (prev + 1) % testimonials.length);

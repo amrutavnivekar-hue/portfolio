@@ -12,10 +12,21 @@ import Contact from '@/components/Contact/Contact';
 import Footer from '@/components/Footer/Footer';
 import { query } from '@/lib/db';
 
+export const revalidate = 60; // Revalidate at most once every minute for edge caching
+
+async function getProfile() {
+  try {
+    const rows = (await query('SELECT * FROM profile ORDER BY id DESC LIMIT 1')) as any[];
+    return rows?.[0] || null;
+  } catch {
+    return null;
+  }
+}
+
 async function getExperiences() {
   try {
-    const rows = await query('SELECT * FROM experiences ORDER BY display_order ASC') as any[];
-    return rows;
+    const rows = (await query('SELECT * FROM experiences ORDER BY display_order ASC')) as any[];
+    return rows || [];
   } catch {
     return [];
   }
@@ -23,11 +34,13 @@ async function getExperiences() {
 
 async function getSkillCategories() {
   try {
-    const categories = await query('SELECT * FROM skill_categories ORDER BY display_order ASC') as any[];
-    const skills = await query('SELECT * FROM skills ORDER BY display_order ASC') as any[];
-    return categories.map((cat: any) => ({
+    const [categories, skills] = await Promise.all([
+      query('SELECT * FROM skill_categories ORDER BY display_order ASC') as Promise<any[]>,
+      query('SELECT * FROM skills ORDER BY display_order ASC') as Promise<any[]>,
+    ]);
+    return (categories || []).map((cat: any) => ({
       name: cat.name,
-      skills: skills
+      skills: (skills || [])
         .filter((s: any) => s.category_id === cat.id)
         .map((s: any) => ({ name: s.name, level: s.level })),
     }));
@@ -36,10 +49,28 @@ async function getSkillCategories() {
   }
 }
 
+async function getEducation() {
+  try {
+    const rows = (await query('SELECT * FROM education ORDER BY display_order ASC')) as any[];
+    return rows || [];
+  } catch {
+    return [];
+  }
+}
+
+async function getCertifications() {
+  try {
+    const rows = (await query('SELECT * FROM certifications ORDER BY display_order ASC')) as any[];
+    return rows || [];
+  } catch {
+    return [];
+  }
+}
+
 async function getAchievements() {
   try {
-    const rows = await query('SELECT * FROM achievements ORDER BY display_order ASC') as any[];
-    return rows;
+    const rows = (await query('SELECT * FROM achievements ORDER BY display_order ASC')) as any[];
+    return rows || [];
   } catch {
     return [];
   }
@@ -47,34 +78,67 @@ async function getAchievements() {
 
 async function getProjects() {
   try {
-    const rows = await query('SELECT * FROM projects ORDER BY display_order ASC') as any[];
-    return rows;
+    const rows = (await query('SELECT * FROM projects ORDER BY display_order ASC')) as any[];
+    return rows || [];
   } catch {
     return [];
   }
 }
 
+async function getTestimonials() {
+  try {
+    const rows = (await query('SELECT * FROM testimonials ORDER BY display_order ASC')) as any[];
+    return rows || [];
+  } catch {
+    return [];
+  }
+}
+
+async function getContact() {
+  try {
+    const rows = (await query('SELECT * FROM contact ORDER BY id DESC LIMIT 1')) as any[];
+    return rows?.[0] || null;
+  } catch {
+    return null;
+  }
+}
+
 export default async function Home() {
-  const [experiences, skillCategories, achievements, projects] = await Promise.all([
+  const [
+    profile,
+    experiences,
+    skillCategories,
+    education,
+    certifications,
+    projects,
+    achievements,
+    testimonials,
+    contact,
+  ] = await Promise.all([
+    getProfile(),
     getExperiences(),
     getSkillCategories(),
-    getAchievements(),
+    getEducation(),
+    getCertifications(),
     getProjects(),
+    getAchievements(),
+    getTestimonials(),
+    getContact(),
   ]);
 
   return (
     <main>
       <Navbar />
-      <Hero />
-      <About />
+      <Hero profile={profile} />
+      <About profile={profile} />
       <Experience experiences={experiences} />
       <Skills categories={skillCategories} />
-      <Education />
-      <Certifications />
+      <Education education={education} />
+      <Certifications certifications={certifications} />
       <Projects projects={projects} />
       <Achievements achievements={achievements} />
-      <Testimonials />
-      <Contact />
+      <Testimonials testimonials={testimonials} />
+      <Contact contact={contact} />
       <Footer />
     </main>
   );
