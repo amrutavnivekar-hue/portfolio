@@ -274,7 +274,12 @@ interface SectionPayload {
 }
 
 function deepClone<T>(value: T): T {
-  return JSON.parse(JSON.stringify(value));
+  if (value === undefined || value === null) return value;
+  try {
+    return JSON.parse(JSON.stringify(value));
+  } catch {
+    return value;
+  }
 }
 
 function renderSimpleInput(
@@ -283,7 +288,7 @@ function renderSimpleInput(
   onChange: (val: any) => void,
   keyName: string
 ) {
-            const inputStyle: React.CSSProperties = {
+  const inputStyle: React.CSSProperties = {
     background: 'var(--background)',
     color: 'var(--text)',
     border: '1px solid color-mix(in srgb, var(--primary) 40%, transparent)',
@@ -337,19 +342,31 @@ export default function SectionEditorPage() {
   const [revisions, setRevisions] = useState<any[]>([]);
 
   const load = async () => {
-    const res = await fetch(`/api/admin/content/${section}`);
-    const data = await res.json();
-    setPayload(data);
-    setModel(data.model);
-    setHistory([deepClone(data.model)]);
-    setFuture([]);
-    setStatus('Loaded');
+    try {
+      const res = await fetch(`/api/admin/content/${section}`);
+      const data = await res.json();
+      if (res.ok && data?.schema) {
+        setPayload(data);
+        setModel(data.model || {});
+        setHistory([deepClone(data.model || {})]);
+        setFuture([]);
+        setStatus('Loaded');
+      } else {
+        setStatus(data?.error || 'Failed to load section');
+      }
+    } catch {
+      setStatus('Failed to load section');
+    }
   };
 
   const loadRevisions = async () => {
-    const res = await fetch(`/api/admin/revisions/${section}`);
-    const data = await res.json();
-    setRevisions(Array.isArray(data) ? data : []);
+    try {
+      const res = await fetch(`/api/admin/revisions/${section}`);
+      const data = await res.json();
+      setRevisions(Array.isArray(data) ? data : []);
+    } catch {
+      setRevisions([]);
+    }
   };
 
   useEffect(() => {
@@ -369,33 +386,45 @@ export default function SectionEditorPage() {
 
   const autosave = async () => {
     setStatus('Saving draft...');
-    const res = await fetch(`/api/admin/content/${section}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model }),
-    });
-    const data = await res.json();
-    setStatus(res.ok ? 'Draft saved' : data.error || 'Failed to save');
-    if (res.ok) loadRevisions();
+    try {
+      const res = await fetch(`/api/admin/content/${section}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ model }),
+      });
+      const data = await res.json();
+      setStatus(res.ok ? 'Draft saved' : data?.error || 'Failed to save');
+      if (res.ok) loadRevisions();
+    } catch {
+      setStatus('Failed to save draft');
+    }
   };
 
   const publish = async () => {
     setStatus('Publishing...');
-    const res = await fetch(`/api/admin/content/${section}/publish`, { method: 'POST' });
-    const data = await res.json();
-    setStatus(res.ok ? 'Published' : data.error || 'Failed to publish');
-    if (res.ok) loadRevisions();
+    try {
+      const res = await fetch(`/api/admin/content/${section}/publish`, { method: 'POST' });
+      const data = await res.json();
+      setStatus(res.ok ? 'Published' : data?.error || 'Failed to publish');
+      if (res.ok) loadRevisions();
+    } catch {
+      setStatus('Failed to publish');
+    }
   };
 
   const restore = async (revisionId: string) => {
-    await fetch(`/api/admin/revisions/${section}/restore`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ revisionId }),
-    });
-    await load();
-    await loadRevisions();
-    setStatus('Revision restored as draft');
+    try {
+      await fetch(`/api/admin/revisions/${section}/restore`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ revisionId }),
+      });
+      await load();
+      await loadRevisions();
+      setStatus('Revision restored as draft');
+    } catch {
+      setStatus('Failed to restore revision');
+    }
   };
 
   const undo = () => {
