@@ -198,7 +198,7 @@ function SectionPreview({ sectionId, model }: { sectionId: string; model: Record
         {items.length === 0 && <p className="text-xs opacity-40">No testimonials yet.</p>}
         {items.map((t, i) => card(
           <>
-            <p className="text-xs italic opacity-80 mb-3">"{t.text || 'Testimonial text...'}"</p>
+            <p className="text-xs italic opacity-80 mb-3">&quot;{t.text || 'Testimonial text...'}&quot;</p>
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white"
                 style={{ background: 'linear-gradient(135deg, var(--primary), var(--secondary))' }}>

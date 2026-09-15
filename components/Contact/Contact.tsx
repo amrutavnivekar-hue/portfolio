@@ -239,7 +239,7 @@ export default function Contact() {
             </motion.button>
 
             {submitStatus === 'success' && (
-              <p className="text-center text-sm text-green-400">✓ Message sent! I'll get back to you soon.</p>
+              <p className="text-center text-sm text-green-400">✓ Message sent! I&apos;ll get back to you soon.</p>
             )}
             {submitStatus === 'error' && (
               <p className="text-center text-sm text-red-400">Something went wrong. Please try again.</p>

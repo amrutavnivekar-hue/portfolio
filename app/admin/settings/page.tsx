@@ -242,7 +242,7 @@ export default function SettingsPage() {
           <div className="rounded-lg p-3 text-xs opacity-70"
             style={{ background: 'var(--background)', border: '1px solid color-mix(in srgb, var(--text) 15%, transparent)' }}>
             <span className="font-medium">Preview: </span>
-            Clicking "Reply" on a message will open{' '}
+            Clicking &quot;Reply&quot; on a message will open{' '}
             <span style={{ color: 'var(--primary)' }}>{selectedProvider.label}</span>
             {' '}with your address <span style={{ color: 'var(--primary)' }}>{replyEmail}</span> pre-filled.
           </div>
@@ -274,7 +274,7 @@ export default function SettingsPage() {
               Create reusable reply templates. Use <code className="px-1 rounded text-xs"
                 style={{ background: 'var(--background)' }}>{'{name}'}</code> and{' '}
               <code className="px-1 rounded text-xs" style={{ background: 'var(--background)' }}>{'{email}'}</code>{' '}
-              as placeholders — they'll be filled with the sender's details.
+              as placeholders — they&apos;ll be filled with the sender&apos;s details.
             </p>
           </div>
           <button
