@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { defaultSkillCategories } from '@/lib/defaultData';
 
 interface Skill {
   name: string;
@@ -13,7 +14,7 @@ interface SkillCategory {
 }
 
 interface SkillsProps {
-  categories: SkillCategory[];
+  categories?: any[];
 }
 
 export default function Skills({ categories }: SkillsProps) {
@@ -35,6 +36,19 @@ export default function Skills({ categories }: SkillsProps) {
       transition: { duration: 0.5 },
     },
   };
+
+  const rawList = categories && categories.length > 0 ? categories : defaultSkillCategories;
+
+  // Normalize categories if they come from XML or direct objects
+  const displayCategories: SkillCategory[] = rawList.map((cat: any) => {
+    const name = cat?.name || cat?.$?.name || 'Category';
+    const rawSkills = cat?.skills || (Array.isArray(cat?.skill) ? cat.skill : cat?.skill ? [cat.skill] : []);
+    const skills: Skill[] = (rawSkills || []).map((s: any) => ({
+      name: s?.name || s?.$?.name || 'Skill',
+      level: Number(s?.level || s?.$?.level || 80),
+    }));
+    return { name, skills };
+  });
 
   return (
     <section id="skills" className="py-20 px-4">
@@ -58,13 +72,13 @@ export default function Skills({ categories }: SkillsProps) {
       </motion.p>
 
       <motion.div
-        className="grid md:grid-cols-2 lg:grid-cols-4 gap-6"
+        className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto"
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
       >
-        {categories.map((category, catIndex) => (
+        {displayCategories.map((category, catIndex) => (
           <motion.div
             key={catIndex}
             variants={itemVariants}

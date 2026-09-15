@@ -2,25 +2,10 @@
 
 import { motion } from 'framer-motion';
 import { FaCertificate, FaExternalLinkAlt, FaCalendar } from 'react-icons/fa';
-import { useEffect, useState } from 'react';
+import { defaultCertifications } from '@/lib/defaultData';
 
 export default function Certifications({ certifications: initialCertifications }: { certifications?: any[] }) {
-  const [certifications, setCertifications] = useState<any[]>(initialCertifications || []);
-  const [error, setError] = useState('');
-
-  useEffect(() => {
-    if (initialCertifications && initialCertifications.length > 0) {
-      setCertifications(initialCertifications);
-      return;
-    }
-    fetch('/api/certifications')
-      .then(res => {
-        if (!res.ok) throw new Error('Failed to load');
-        return res.json();
-      })
-      .then(setCertifications)
-      .catch(err => setError(err.message));
-  }, [initialCertifications]);
+  const list = initialCertifications && initialCertifications.length > 0 ? initialCertifications : defaultCertifications;
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -62,20 +47,14 @@ export default function Certifications({ certifications: initialCertifications }
         Professional certifications and credentials
       </motion.p>
 
-      {error && (
-        <div className="glass rounded-xl p-4 text-red-400 mb-6">
-          Error loading certifications: {error}
-        </div>
-      )}
-
       <motion.div
-        className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+        className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto"
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
       >
-        {certifications.map((cert, index) => (
+        {list.map((cert, index) => (
           <motion.div
             key={index}
             variants={itemVariants}

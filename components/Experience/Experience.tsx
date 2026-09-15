@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaBuilding, FaCalendar, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { useState } from 'react';
+import { defaultExperiences } from '@/lib/defaultData';
 
 interface ExperienceItem {
   company: string;
@@ -13,10 +14,11 @@ interface ExperienceItem {
 }
 
 interface ExperienceProps {
-  experiences: ExperienceItem[];
+  experiences?: ExperienceItem[];
 }
 
-export default function Experience({ experiences }: ExperienceProps) {
+export default function Experience({ experiences: initialExperiences }: ExperienceProps) {
+  const experiences = initialExperiences && initialExperiences.length > 0 ? initialExperiences : defaultExperiences;
   const [active, setActive] = useState(0);
   const [direction, setDirection] = useState(1); // 1 = forward, -1 = backward
 

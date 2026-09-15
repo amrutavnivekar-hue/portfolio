@@ -3,15 +3,17 @@
 import { motion, useInView } from 'framer-motion';
 import { useSpring, animated } from '@react-spring/web';
 import { useRef, useEffect, useState } from 'react';
+import { defaultAchievements } from '@/lib/defaultData';
 
 interface Achievement {
   title: string;
-  count_value: string;
+  count_value?: string | number;
+  count?: string | number;
   icon: string;
 }
 
 interface AchievementsProps {
-  achievements: Achievement[];
+  achievements?: any[];
 }
 
 const AnimatedCounter = ({ value }: { value: string }) => {
@@ -19,10 +21,11 @@ const AnimatedCounter = ({ value }: { value: string }) => {
   const isInView = useInView(ref, { once: true });
   const [started, setStarted] = useState(false);
 
-  const numericValue = parseFloat(value);
-  const isDecimal = value.includes('.');
-  const decimalPlaces = isDecimal ? value.split('.')[1].length : 0;
-  const suffix = value.replace(/^[\d.]+/, '');
+  const safeVal = String(value || '0');
+  const numericValue = isNaN(parseFloat(safeVal)) ? 0 : parseFloat(safeVal);
+  const isDecimal = safeVal.includes('.');
+  const decimalPlaces = isDecimal ? safeVal.split('.')[1].length : 0;
+  const suffix = safeVal.replace(/^[\d.]+/, '');
 
   // Only start counting when element is in view
   useEffect(() => {
@@ -47,6 +50,8 @@ const AnimatedCounter = ({ value }: { value: string }) => {
 };
 
 export default function Achievements({ achievements }: AchievementsProps) {
+  const list = achievements && achievements.length > 0 ? achievements : defaultAchievements;
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -86,27 +91,30 @@ export default function Achievements({ achievements }: AchievementsProps) {
       </motion.p>
 
       <motion.div
-        className="grid md:grid-cols-2 lg:grid-cols-4 gap-6"
+        className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto"
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
       >
-        {achievements.map((achievement, index) => (
-          <motion.div
-            key={index}
-            variants={itemVariants}
-            className="glass rounded-2xl p-8 text-center card-hover"
-          >
-            <div className="text-5xl mb-4">{achievement.icon}</div>
+        {list.map((achievement, index) => {
+          const countVal = String(achievement.count || achievement.count_value || '0');
+          return (
+            <motion.div
+              key={index}
+              variants={itemVariants}
+              className="glass rounded-2xl p-8 text-center card-hover"
+            >
+              <div className="text-5xl mb-4">{achievement.icon}</div>
 
-            <div className="text-4xl font-bold gradient-text mb-2">
-              <AnimatedCounter value={String(achievement.count_value)} />
-            </div>
+              <div className="text-4xl font-bold gradient-text mb-2">
+                <AnimatedCounter value={countVal} />
+              </div>
 
-            <p className="text-lg font-medium opacity-80">{achievement.title}</p>
-          </motion.div>
-        ))}
+              <p className="text-lg font-medium opacity-80">{achievement.title}</p>
+            </motion.div>
+          );
+        })}
       </motion.div>
     </section>
   );

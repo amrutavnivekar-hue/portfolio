@@ -2,37 +2,10 @@
 
 import { motion } from 'framer-motion';
 import { FaUser, FaMapMarkerAlt, FaEnvelope, FaPhone } from 'react-icons/fa';
-import { useEffect, useState } from 'react';
+import { defaultProfile } from '@/lib/defaultData';
 
 export default function About({ profile: initialProfile }: { profile?: any }) {
-  const [profile, setProfile] = useState<any>(initialProfile || null);
-  const [error, setError] = useState('');
-
-  useEffect(() => {
-    if (initialProfile) {
-      setProfile(initialProfile);
-      return;
-    }
-    fetch('/api/profile')
-      .then(res => {
-        if (!res.ok) throw new Error('Failed to load');
-        return res.json();
-      })
-      .then(setProfile)
-      .catch(err => setError(err.message));
-  }, [initialProfile]);
-
-  if (error) {
-    return (
-      <section id="about" className="py-20 px-4">
-        <div className="glass rounded-xl p-4 text-red-400 max-w-6xl mx-auto">
-          Error loading biography: {error}
-        </div>
-      </section>
-    );
-  }
-
-  if (!profile) return null;
+  const profile = initialProfile || defaultProfile;
 
   const containerVariants = {
     hidden: { opacity: 0 },

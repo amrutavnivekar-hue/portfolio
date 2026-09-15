@@ -2,11 +2,11 @@
 
 import { motion } from 'framer-motion';
 import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaLinkedin, FaGithub, FaTwitter } from 'react-icons/fa';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { defaultContact } from '@/lib/defaultData';
 
 export default function Contact({ contact: initialContact }: { contact?: any }) {
-  const [contact, setContact] = useState<any>(initialContact || null);
-  const [error, setError] = useState('');
+  const contact = initialContact || defaultContact;
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -14,20 +14,6 @@ export default function Contact({ contact: initialContact }: { contact?: any }) 
   });
   const [submitting, setSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
-
-  useEffect(() => {
-    if (initialContact) {
-      setContact(initialContact);
-      return;
-    }
-    fetch('/api/contact')
-      .then(res => {
-        if (!res.ok) throw new Error('Failed to load');
-        return res.json();
-      })
-      .then(setContact)
-      .catch(err => setError(err.message));
-  }, [initialContact]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -75,12 +61,6 @@ export default function Contact({ contact: initialContact }: { contact?: any }) 
       >
         Get in touch with me
       </motion.p>
-
-      {error && (
-        <div className="glass rounded-xl p-4 text-red-400 mb-6">
-          Error loading contact: {error}
-        </div>
-      )}
 
       <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
         <motion.div

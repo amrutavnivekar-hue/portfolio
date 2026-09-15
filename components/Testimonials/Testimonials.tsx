@@ -2,26 +2,12 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaQuoteLeft, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { defaultTestimonials } from '@/lib/defaultData';
 
 export default function Testimonials({ testimonials: initialTestimonials }: { testimonials?: any[] }) {
-  const [testimonials, setTestimonials] = useState<any[]>(initialTestimonials || []);
-  const [error, setError] = useState('');
+  const testimonials = initialTestimonials && initialTestimonials.length > 0 ? initialTestimonials : defaultTestimonials;
   const [currentIndex, setCurrentIndex] = useState(0);
-
-  useEffect(() => {
-    if (initialTestimonials && initialTestimonials.length > 0) {
-      setTestimonials(initialTestimonials);
-      return;
-    }
-    fetch('/api/testimonials')
-      .then(res => {
-        if (!res.ok) throw new Error('Failed to load');
-        return res.json();
-      })
-      .then(setTestimonials)
-      .catch(err => setError(err.message));
-  }, [initialTestimonials]);
 
   const nextTestimonial = () => {
     setCurrentIndex((prev) => (prev + 1) % testimonials.length);
@@ -60,6 +46,11 @@ export default function Testimonials({ testimonials: initialTestimonials }: { te
 
   if (!testimonials.length) return null;
 
+  const current = testimonials[currentIndex] || testimonials[0];
+  const authorName = current.author_name || current.name || 'Anonymous';
+  const authorRole = current.author_role || current.role || '';
+  const text = current.text || '';
+
   return (
     <section id="testimonials" className="py-20 px-4">
       <motion.h2
@@ -81,12 +72,6 @@ export default function Testimonials({ testimonials: initialTestimonials }: { te
         What clients and colleagues say
       </motion.p>
 
-      {error && (
-        <div className="glass rounded-xl p-4 text-red-400 mb-6">
-          Error loading testimonials: {error}
-        </div>
-      )}
-
       <div className="max-w-4xl mx-auto relative">
         <AnimatePresence initial={false} custom={direction} mode="wait">
           <motion.div
@@ -105,7 +90,7 @@ export default function Testimonials({ testimonials: initialTestimonials }: { te
             <div className="flex items-start gap-6">
               <div className="w-20 h-20 rounded-full bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] flex items-center justify-center flex-shrink-0">
                 <span className="text-3xl font-bold text-white">
-                  {testimonials[currentIndex].author_name.charAt(0)}
+                  {authorName.charAt(0)}
                 </span>
               </div>
 
@@ -113,12 +98,12 @@ export default function Testimonials({ testimonials: initialTestimonials }: { te
                 <FaQuoteLeft className="text-[var(--primary)] text-3xl mb-4 opacity-50" />
 
                 <p className="text-lg md:text-xl opacity-90 mb-6 leading-relaxed">
-                  {testimonials[currentIndex].text}
+                  {text}
                 </p>
 
                 <div>
-                  <h4 className="font-bold text-xl">{testimonials[currentIndex].author_name}</h4>
-                  <p className="text-[var(--primary)]">{testimonials[currentIndex].author_role}</p>
+                  <h4 className="font-bold text-xl">{authorName}</h4>
+                  {authorRole && <p className="text-[var(--primary)]">{authorRole}</p>}
                 </div>
               </div>
             </div>
